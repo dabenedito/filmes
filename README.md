@@ -2,4 +2,4 @@
 Workshop apresentado por Sujeiro Programador
 
 # Projeto: Filmes
-App para apresentação de filmes, com lista de filmes e destaques.
+App para apresentação de filmes, com salvamento de lista de filmes favoritados e destaques.
