@@ -3,9 +3,9 @@ import {BannerItem, Container, Rate, RateContainer, Title} from "./style";
 
 import {Ionicons} from '@expo/vector-icons';
 
-function SliderItem({ data }) {
+function SliderItem({ data, navigatePage }) {
     return (
-        <Container activetyOpacity={0.7}>
+        <Container activetyOpacity={0.7} onPress={ () => navigatePage(data) }>
             <BannerItem
                 source={{ uri: `https://image.tmdb.org/t/p/original${data.poster_path}` }}
             />
