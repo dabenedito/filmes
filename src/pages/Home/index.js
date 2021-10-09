@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {getListMovies, randomBanner} from "../../utils/movie";
-import {ActivityIndicator, ScrollView} from "react-native";
+import {ActivityIndicator, ScrollView, ToastAndroid} from "react-native";
 import api, {key} from '../../services/api'
 import {Feather} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
@@ -14,7 +14,8 @@ function Home() {
     const [nowMovies, setNewMovies] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
     const [topMovies, setTopMovies] = useState([]);
-    const [bannerMovie, setBannerMovie] = useState({})
+    const [bannerMovie, setBannerMovie] = useState({});
+    const [input, setInput] = useState("");
 
     const [loading, setLoading] = useState(true);
 
@@ -77,6 +78,16 @@ function Home() {
         navigation.navigate('Detail', { id: item.id });
     }
 
+    function handleSearchMovie(){
+        if (input === "") {
+            ToastAndroid.show("Digite o nome do filme primeiro.", ToastAndroid.SHORT);
+            return;
+        }
+
+        navigation.navigate('Search', { name: input });
+        setInput('');
+    }
+
     if (loading) {
         return (
             <Container>
@@ -84,6 +95,7 @@ function Home() {
             </Container>
         )
     }
+
     return (
         <Container>
             <Header title={"React Prime"}/>
@@ -92,8 +104,10 @@ function Home() {
                 <Input
                     placeholder={"Qual filme quer ver?"}
                     placeholderTextColor={'#DDD'}
+                    value={input}
+                    onChangeText={ (text) => setInput(text) }
                 />
-                <SearchButton>
+                <SearchButton onPress={ handleSearchMovie }>
                     <Feather name='search' size={30} color={'#FFF'}/>
                 </SearchButton>
             </SearchContainer>

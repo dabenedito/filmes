@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "totum",
     "name": "filmes",
     "slug": "filmes",
     "version": "1.0.0",
