@@ -14,6 +14,7 @@ function Home() {
     const [nowMovies, setNewMovies] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
     const [topMovies, setTopMovies] = useState([]);
+    const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [bannerMovie, setBannerMovie] = useState({});
     const [input, setInput] = useState("");
 
@@ -26,7 +27,7 @@ function Home() {
         const ac = new AbortController();
 
         async function getMovies() {
-            const [nowData, popularData, topData] = await Promise.all([
+            const [nowData, popularData, topData, upcomingData] = await Promise.all([
                 api.get('/movie/now_playing', {
                     params: {
                         api_key: key,
@@ -50,14 +51,24 @@ function Home() {
                         page: 1,
                     }
                 }),
+
+                api.get('/movie/upcoming', {
+                    params: {
+                        api_key: key,
+                        language: 'pt-BR',
+                        page: 1,
+                    }
+                })
             ])
 
             if (isActive) {
+                const upcomingList = getListMovies(5, upcomingData.data.results);
                 const popularList = getListMovies(5, popularData.data.results);
                 const nowList = getListMovies(10, nowData.data.results);
                 const topList = getListMovies(5, topData.data.results);
 
                 setBannerMovie(nowData.data.results[randomBanner(nowData.data.results)]);
+                setUpcomingMovies(upcomingList);
                 setPopularMovies(popularList);
                 setNewMovies(nowList);
                 setTopMovies(topList);
@@ -75,16 +86,16 @@ function Home() {
     }, [])
 
     function navigateDetailPage(item) {
-        navigation.navigate('Detail', { id: item.id });
+        navigation.navigate('Detail', {id: item.id});
     }
 
-    function handleSearchMovie(){
+    function handleSearchMovie() {
         if (input === "") {
             ToastAndroid.show("Digite o nome do filme primeiro.", ToastAndroid.SHORT);
             return;
         }
 
-        navigation.navigate('Search', { name: input });
+        navigation.navigate('Search', {name: input});
         setInput('');
     }
 
@@ -105,9 +116,9 @@ function Home() {
                     placeholder={"Qual filme quer ver?"}
                     placeholderTextColor={'#DDD'}
                     value={input}
-                    onChangeText={ (text) => setInput(text) }
+                    onChangeText={(text) => setInput(text)}
                 />
-                <SearchButton onPress={ handleSearchMovie }>
+                <SearchButton onPress={handleSearchMovie}>
                     <Feather name='search' size={30} color={'#FFF'}/>
                 </SearchButton>
             </SearchContainer>
@@ -129,7 +140,20 @@ function Home() {
                         ({item}) => <SliderItem
                             data={item}
                             navigatePage={() => navigateDetailPage(item)}
-                        /> }
+                        />}
+                    keyExtractor={(item) => String(item.id)}
+                />
+
+                <Title>Próximos Lançamentos</Title>
+                <SliderMovie
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    data={upcomingMovies}
+                    renderItem={
+                        ({item}) => <SliderItem
+                            data={item}
+                            navigatePage={() => navigateDetailPage(item)}
+                        />}
                     keyExtractor={(item) => String(item.id)}
                 />
 
@@ -142,7 +166,7 @@ function Home() {
                         ({item}) => <SliderItem
                             data={item}
                             navigatePage={() => navigateDetailPage(item)}
-                        /> }
+                        />}
                     keyExtractor={(item) => String(item.id)}
                 />
 
@@ -155,7 +179,7 @@ function Home() {
                         ({item}) => <SliderItem
                             data={item}
                             navigatePage={() => navigateDetailPage(item)}
-                        /> }
+                        />}
                     keyExtractor={(item) => String(item.id)}
                 />
             </ScrollView>

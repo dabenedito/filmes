@@ -78,3 +78,8 @@ export const Description = styled.Text`
   color: #FFF;
   line-height: 20px;
 `;
+
+export const SliderMovie = styled.FlatList`
+  height: 250px;
+  padding: 0 14px;
+`;
