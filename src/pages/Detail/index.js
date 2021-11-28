@@ -31,6 +31,7 @@ function Detail() {
     const [openLink, setOpenLink] = useState(false)
     const [similarMovies, setSimilarMovies] = useState([])
     const [favoritedMovie, setFavoritedMovie] = useState(false);
+    const [refreshPage, setRefreshPage] = useState("");
 
     useEffect(() => {
         let isActive = true;
@@ -78,6 +79,7 @@ function Detail() {
 
     function navigateDetailPage(item) {
         navigation.navigate('Detail', {id: item.id});
+        setRefreshPage("refresh");
     }
 
     async function handleFavoriteMovie(movie) {
@@ -123,12 +125,16 @@ function Detail() {
                 source={{uri: `https://image.tmdb.org/t/p/original${movie.poster_path}`}}
             />
 
-            <ButtonLink onPress={() => setOpenLink(true)}>
-                <Feather
-                    name="link"
-                    size={24}
-                    color={"#FFF"}/>
-            </ButtonLink>
+            {
+                movie.homepage ? (
+                    <ButtonLink onPress={() => setOpenLink(true)}>
+                        <Feather
+                            name="link"
+                            size={24}
+                            color={"#FFF"}/>
+                    </ButtonLink>
+                ) : ( <></> )
+            }
 
             <Title numberOfLines={2}>{movie.title}</Title>
 
@@ -177,7 +183,7 @@ function Detail() {
 
             <Modal animationType="slide" transparent={true} visible={openLink}>
                 <ModalLink
-                    link={movie?.homepage}
+                    link={movie.homepage}
                     title={movie?.title}
                     closeModal={() => setOpenLink(false)}
                 />

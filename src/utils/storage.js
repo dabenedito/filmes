@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ToastAndroid} from "react-native";
+import {storageKey} from "./const";
 
 // Buscar filmes salvos
 export async function getMoviesSaved(key) {
@@ -22,7 +23,7 @@ export async function saveMovie(key, newMovie) {
 
 // Deletar filme específico da lista
 export async function deleteMovie(id) {
-    let moviesStored = await getMoviesSaved('@primereact');
+    let moviesStored = await getMoviesSaved(storageKey);
     let myMovies = moviesStored.filter( item => {
         return (item.id !== id)
     })
@@ -32,7 +33,7 @@ export async function deleteMovie(id) {
 
 // Filtrar filmes salvos da lista
 export async function hasMovie(movie) {
-    let moviesStored = await getMoviesSaved('@primereact');
+    let moviesStored = await getMoviesSaved(storageKey);
 
     return moviesStored.find( item => item.id === movie.id);
 }

@@ -17,7 +17,7 @@ function FavoriteItem({ data, deleteMovie, navigatePage }) {
                     <Title size={14}>Ver Detalhes</Title>
                 </DetailButton>
 
-                <DeleteButton onPress={ () => deleteMovie(data.id)}>
+                <DeleteButton onPress={ () => deleteMovie(data.id)}>    
                     <Feather name='trash' size={24} color={"#FFF"} />
                 </DeleteButton>
             </ActionContainer>

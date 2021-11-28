@@ -33,14 +33,12 @@ function StackRoutes() {
                 options={{
                     headerTintColor: "#FFF",
                     title: 'Sua busca',
-
                     headerTitleStyle: {
                         color: "#FFF",
                     },
-
                     headerStyle: {
                         backgroundColor: "#141A29",
-                    }
+                    },
                 }}
             />
         </Stack.Navigator>

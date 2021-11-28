@@ -4,6 +4,7 @@ import {Container, ListMovies} from "./style";
 import {deleteMovie, getMoviesSaved} from "../../utils/storage";
 import FavoriteItem from "../../components/FavoriteItem";
 import {useNavigation, useIsFocused} from "@react-navigation/native";
+import {storageKey} from "../../utils/const";
 
 function Movies() {
     const [movies, setMovies] = useState([]);
@@ -14,21 +15,20 @@ function Movies() {
         let isActive = true;
 
         async function getFavoriteMovies(){
-            const result = await getMoviesSaved('@primereact');
+            const result = await getMoviesSaved(storageKey);
             setMovies(result);
         }
 
         if (isActive)
             getFavoriteMovies();
 
-        return () => {
-            isActive = false;
-        }
-    }, [isFocused])
+        return () => { isActive = false; }
+    }, [isFocused]);
 
     async function handleDelete(id) {
         const result = await deleteMovie(id);
         setMovies(result);
+        ListMovies.forceUpdate;
     }
 
     function navigateDetailPage(item) {
